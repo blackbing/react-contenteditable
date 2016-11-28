@@ -40,6 +40,10 @@ export default class ContentEditable extends React.Component {
     this.htmlEl.addEventListener("DOMCharacterDataModified", this.emitChange, false);
   }
 
+  componentWillUnmount() {
+    this.htmlEl.removeEventListener("DOMCharacterDataModified", this.emitChange);
+  }
+
   componentDidUpdate() {
     if ( this.htmlEl && this.props.html !== this.htmlEl.innerHTML ) {
       // Perhaps React (whose VDOM gets outdated because we often prevent
