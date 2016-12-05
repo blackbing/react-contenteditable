@@ -16,6 +16,10 @@ export default class ContentEditable extends React.Component {
         ref: (e) => this.htmlEl = e,
         onInput: this.emitChange,
         onBlur: this.props.onBlur || this.emitChange,
+        onKeyUp: this.props.onKeyUp ? function(evt) {
+          this.props.onKeyUp(evt);
+          this.emitChange(evt)
+        }.bind(this) : this.emitChange,
         contentEditable: !this.props.disabled,
         dangerouslySetInnerHTML: {__html: html}
       },
@@ -48,8 +52,8 @@ export default class ContentEditable extends React.Component {
     if (!this.htmlEl) return;
     var html = this.htmlEl.innerHTML;
     if (this.props.onChange && html !== this.lastHtml) {
-      evt.target = { value: html };
-      this.props.onChange(evt);
+      // evt.target = { value: html };
+      this.props.onChange(html);
     }
     this.lastHtml = html;
   }
